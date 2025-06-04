@@ -14,47 +14,37 @@ function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log("User already logged in:", user);
-        navigate('/about');
-      }
-    });
-    return () => unsubscribe();
-  }, [navigate]);
+  
 
- const handleEmailLogin = async (e) => {
+const handleEmailLogin = async (e) => {
   e.preventDefault();
   setError('');
   try {
     if (!email || !password) {
       throw new Error("Email and password are required");
     }
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    alert("Logged in successfully!"); 
+    await signInWithEmailAndPassword(auth, email, password);
+    // No need for alert, just navigate
     navigate('/about');
-  }catch (err) {
-      console.error("Login error:", err.code, err.message);
-      setError(
-        err.code === 'auth/invalid-credential'
-          ? "Invalid email or password. Please check your credentials or sign up."
-          : err.message
-      );
-    }
-  };
+  } catch (err) {
+    console.error("Login error:", err.code, err.message);
+    setError(
+      err.code === 'auth/invalid-credential'
+        ? "Invalid email or password. Please check your credentials or sign up."
+        : err.message
+    );
+  }
+};
 
-  const handleGoogleLogin = async () => {
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      alert("Logged in successfully with Google!");
-      console.log("Google login successful:", result.user);
-      navigate('/about');
-    } catch (err) {
-      console.error("Google login error:", err.code, err.message);
-      setError(err.message);
-    }
-  };
+ const handleGoogleLogin = async () => {
+  try {
+    await signInWithPopup(auth, googleProvider);
+    navigate('/about');
+  } catch (err) {
+    console.error("Google login error:", err.code, err.message);
+    setError(err.message);
+  }
+};
 
   return (
     <motion.div className="login-container">

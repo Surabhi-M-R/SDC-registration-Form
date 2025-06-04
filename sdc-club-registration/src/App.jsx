@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/Login.jsx';
-import Signup from './components/Signup.jsx'; // Fixed import path
+import Signup from './components/Signup.jsx';
 import About from './components/About.jsx';
 import RegistrationForm from './components/RegistrationForm.jsx';
 import { AuthProvider } from './contexts/AuthContext';
@@ -16,22 +16,12 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route
-              path="/about"
-              element={
-                <PrivateRoute>
-                  <About />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/register"
-              element={
-                <PrivateRoute>
-                  <RegistrationForm />
-                </PrivateRoute>
-              }
-            />
+            
+            {/* Protected routes */}
+            <Route element={<PrivateRoute />}>
+              <Route path="/about" element={<About />} />
+              <Route path="/register" element={<RegistrationForm />} />
+            </Route>
           </Routes>
         </div>
       </AuthProvider>

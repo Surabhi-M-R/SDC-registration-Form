@@ -12,19 +12,23 @@ function Signup() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSignup = async (e) => {
+const handleSignup = async (e) => {
   e.preventDefault();
   setError('');
+  setIsSubmitting(true);
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    alert("Account created successfully! You are now logged in.");
+    await createUserWithEmailAndPassword(auth, email, password);
     navigate('/about');
-  }catch (err) {
-      console.error("Signup error:", err.code, err.message);
-      setError(err.message);
-    }
-  };
+  } catch (err) {
+    console.error("Signup error:", err.code, err.message);
+    setError(err.message);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+  
 
   return (
     <motion.div className="login-container">
@@ -58,14 +62,15 @@ function Signup() {
             />
           </div>
           <motion.button
-            type="submit"
-            className="login-button"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            disabled={!email || !password}
-          >
-            Sign Up
-          </motion.button>
+  type="submit"
+  className="login-button"
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+  disabled={!email || !password || isSubmitting}
+>
+  {isSubmitting ? 'Creating Account...' : 'Sign Up'}
+</motion.button>
+
         </form>
         <div className="signup-link">
           <p>Already have an account? <a href="/">Login</a></p>

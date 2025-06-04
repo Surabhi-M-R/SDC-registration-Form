@@ -72,39 +72,40 @@ function RegistrationForm() {
   };
   
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  e.preventDefault();
+  setIsSubmitting(true);
+  
+  const validationErrors = validateForm();
+  setErrors(validationErrors);
+  
+  if (Object.keys(validationErrors).length > 0) {
+    setIsSubmitting(false);
+    return;
+  }
+  
+  try {
+    const docRef = await addDoc(collection(db, 'registrations'), {
+      name: formData.name,
+      usn: formData.usn.toUpperCase(),
+      semester: Number(formData.semester),
+      field: formData.field,
+      github: formData.github || null,
+      linkedin: formData.linkedin || null,
+      email: currentUser.email,
+      timestamp: new Date().toISOString()
+    });
     
-    const validationErrors = validateForm();
-    setErrors(validationErrors);
-    
-    if (Object.keys(validationErrors).length > 0) {
-      setIsSubmitting(false);
-      return;
-    }
-    
-    try {
-      // Create a new registration in Firestore
-      await addDoc(collection(db, 'registrations'), {
-        ...formData,
-        email: currentUser.email,
-        timestamp: new Date().toISOString()
-      });
-      
-      setSubmitted(true);
-      alert('Registration successful! Thank you for registering with SDC Club.');
-      
-      setTimeout(() => {
-        navigate('/about');
-      }, 3000);
-    } catch (error) {
-      console.error("Error submitting form: ", error);
-      alert('Registration failed. Please try again.');
-      setErrors({ submit: 'Failed to submit form. Please try again.' });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    console.log("Document written with ID: ", docRef.id);
+    setSubmitted(true);
+    alert('Registration successful!');
+    setTimeout(() => navigate('/about'), 2000);
+  } catch (error) {
+    console.error("Full error:", error);
+    alert(`Registration failed: ${error.message}`);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
   
   if (submitted) {
     return (
