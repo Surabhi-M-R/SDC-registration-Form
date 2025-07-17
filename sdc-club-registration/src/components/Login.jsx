@@ -7,12 +7,13 @@ import { auth, googleProvider, signInWithPopup, signInWithEmailAndPassword } fro
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import './Login.css';
-
+import { setPersistence, browserLocalPersistence } from 'firebase/auth';
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  
 
   
 
@@ -24,7 +25,7 @@ const handleEmailLogin = async (e) => {
       throw new Error("Email and password are required");
     }
     await signInWithEmailAndPassword(auth, email, password);
-    // No need for alert, just navigate
+    console.log("User logged in successfully");
     navigate('/about');
   } catch (err) {
     console.error("Login error:", err.code, err.message);
@@ -91,7 +92,7 @@ const handleEmailLogin = async (e) => {
         </form>
 
         <div className="signup-link">
-          <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+          <p>Don't have an account? <span style={{color: '#f5d5e0', cursor: 'pointer', fontWeight: 500}} onClick={() => navigate('/signup')}>Sign Up</span></p>
         </div>
 
         <div className="divider">

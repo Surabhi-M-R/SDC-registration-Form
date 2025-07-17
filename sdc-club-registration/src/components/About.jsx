@@ -69,17 +69,23 @@ function About() {
           </motion.section>
         </div>
 
-        <motion.button
-          className="register-button"
-          onClick={() => navigate('/register')}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 1 }}
-        >
-          Register Here
-        </motion.button>
+   <motion.button
+  className="register-button"
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Register button clicked - test');
+    navigate('/register');
+  }}
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+  initial={{ y: 20, opacity: 0 }}
+  animate={{ y: 0, opacity: 1 }}
+  transition={{ duration: 0.5, delay: 1 }}
+  style={{ position: 'relative', zIndex: 10 }} // Force higher z-index
+>
+  Register Here
+</motion.button>
       </motion.div>
     </motion.div>
   );

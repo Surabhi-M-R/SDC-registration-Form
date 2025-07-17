@@ -128,8 +128,30 @@
   transform: translateY(-2px);
 }
 
+/* --- Dropdown Arrow Styling for Better Visibility --- */
 .form-group select {
-  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23c874b2" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  background-size: 24px 24px;
+  padding-right: 48px;
+}
+
+/* --- Dropdown Option Styling for Visibility --- */
+.form-group select, .form-group select option {
+  color: #210535;
+  background: #fff;
+  font-weight: 500;
+}
+
+.form-group select:focus {
+  color: #210535;
+  background: #f5d5e0;
+  border-color: #c874b2;
+  box-shadow: 0 0 8px #c874b2;
 }
 
 .input-icon {
@@ -198,6 +220,12 @@
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: white;
   transform-style: preserve-3d;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: unset;
+  margin: 0 auto;
 }
 
 .submission-success h2 {
@@ -315,6 +343,12 @@
   .form-group input, .form-group select {
     padding: 14px 14px 14px 45px;
   }
+
+  .form-group select {
+    padding-right: 40px;
+    background-position: right 12px center;
+    background-size: 20px 20px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -347,5 +381,43 @@
   
   .submission-success h2 {
     font-size: 1.8rem;
+  }
+}
+
+/* Make all main text elements bolder and bigger */
+.registration-title, .submission-success h2 {
+  font-size: 3.2rem;
+  font-weight: 800;
+}
+
+.registration-form, .submission-success p {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.form-group input, .form-group select {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.submit-button {
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.error, .error-message {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .registration-title, .submission-success h2 {
+    font-size: 2.5rem;
+  }
+  .form-group input, .form-group select {
+    font-size: 1.1rem;
+  }
+  .submit-button {
+    font-size: 1.15rem;
   }
 }

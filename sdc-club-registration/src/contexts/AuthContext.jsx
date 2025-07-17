@@ -9,21 +9,37 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('AuthProvider - Setting up auth listener');
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log('Auth state changed:', user);
       setCurrentUser(user);
       setLoading(false);
     });
 
-    return unsubscribe;
+    return () => {
+      console.log('AuthProvider - Cleaning up auth listener');
+      unsubscribe();
+    };
   }, []);
 
+  const value = {
+    currentUser,
+    loading
+  };
+
+  console.log('AuthProvider - Current state:', value);
+
   return (
-    <AuthContext.Provider value={{ currentUser, loading }}>
-      {!loading && children}
+    <AuthContext.Provider value={value}>
+      {children} {/* Removed the !loading condition here */}
     </AuthContext.Provider>
   );
 }
 
 export function useAuth() {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 }
